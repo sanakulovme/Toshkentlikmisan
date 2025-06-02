@@ -104,7 +104,6 @@
     ];
 
     let currentQuestion = 0;
-    let correctCount = 0;
     let timer;
     let timeLeft = 10;
 
@@ -116,7 +115,7 @@
 
     function nextQuestion() {
       if (currentQuestion >= questions.length) {
-        showResult();
+        showSuccess();
         return;
       }
       const q = questions[currentQuestion];
@@ -135,7 +134,10 @@
     function checkAnswer(answer) {
       clearInterval(timer);
       const correct = questions[currentQuestion].correct;
-      if (answer === correct) correctCount++;
+      if (answer !== correct) {
+        showFailure();
+        return;
+      }
       currentQuestion++;
       nextQuestion();
     }
@@ -148,21 +150,23 @@
         document.getElementById('timer').innerText = `🕒 ${timeLeft}`;
         if (timeLeft <= 0) {
           clearInterval(timer);
-          currentQuestion++;
-          nextQuestion();
+          showFailure();
         }
       }, 1000);
     }
 
-    function showResult() {
+    function showSuccess() {
       document.getElementById('quiz').style.display = 'none';
       const result = document.getElementById('result');
       result.style.display = 'block';
-      if (correctCount >= 4) {
-        result.innerText = 'Siz haqiqiy Toshkent haqida ko‘p narsa bilasiz!';
-      } else {
-        result.innerText = 'Ko‘rib turganingizdek, siz Toshkentlikman deya turib, viloyatliklarni haqorat qilasiz, lekin yashab turgan joyingiz haqida oddiy ma’lumotlarni bilmaysiz. Unutmang, siz O‘ZBEKISTONliksiz.';
-      }
+      result.innerText = 'Siz haqiqiy Toshkent haqida ko‘p narsa bilasiz!';
+    }
+
+    function showFailure() {
+      document.getElementById('quiz').style.display = 'none';
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+      result.innerText = 'Ko‘rib turganingizdek, siz Toshkentlikman deya turib, viloyatliklarni haqorat qilasiz, lekin yashab turgan joyingiz haqida oddiy ma’lumotlarni bilmaysiz. Unutmang, siz O‘ZBEKISTONliksiz.';
     }
   </script></body>
   </html>
